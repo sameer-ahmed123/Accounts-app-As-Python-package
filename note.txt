@@ -1,0 +1,1 @@
+"Note to self: make accounts app which can be intigrated into any othe django project with only simple changes " 
