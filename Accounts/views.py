@@ -21,6 +21,23 @@ def AccountsLogin(request):
     }
     return render(request, "login.html", context)
 
+
+def AccountRegister(request):
+    form = UserCreationForm
+    if request.method =="POST":
+        form = UserCreationForm(data=request.POST)
+        if form.is_valid():
+            user = form.save(commit=False)
+            user.save()
+            login(request, user)
+            return redirect("accounts:chk")
+    else:
+        form = UserCreationForm()
+    context = {
+        "form": form,
+    }
+    return render(request, "register.html", context)
+
 @login_required
 def checkauth(request):
     return render(request,"authCheck.html")
