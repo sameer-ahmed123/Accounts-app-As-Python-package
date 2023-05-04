@@ -38,6 +38,11 @@ def AccountRegister(request):
     }
     return render(request, "register.html", context)
 
+
+def AccountsLogout(request):
+    logout(request)
+    return redirect("accounts:chk")
+
 @login_required
 def checkauth(request):
     return render(request,"authCheck.html")
