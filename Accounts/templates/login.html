@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>login Page</title>
 </head>
+
 <body>
     <h1>login page for Accounts app</h1>
 
@@ -15,8 +17,18 @@
         <form action="" method="post">
             {% csrf_token %}
             {{form.as_p}}
-            <input type="submit">
+            <input id="login_submit" type="submit">
         </form>
     </div>
+
+    <script>
+        const login_btn = document.getElementById("login_submit")
+
+        login_btn.onclick = (e) =>{
+            e.preventDefault()
+            console.log("prevented default")
+        }
+    </script>
 </body>
+
 </html>
