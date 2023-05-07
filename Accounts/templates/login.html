@@ -49,11 +49,25 @@
                     console.log("ajax login working")
                     $("#error_message").text(response.status)
                     if (response.status == "authenticated") {
-                        $("#error_message").text(response.status)
-                        setTimeout(() => { window.location = "{% url 'accounts:chk' %}" }, 3000)
-                        // disp.innerHTML = "login sussess"
+                        $("#error_message").text(response.status);
+                        disp.innerHTML = "login success";
+                        // here after the post ajax request succeeds it send
+                        // another get request to get the required page 
+                        $.ajax({
+                            url: "{% url 'accounts:chk' %}",
+                            type: "GET",
+                            success: function (data) {
+                                // Replace the current page content with the fetched content
+                                $("html").html(data);
+                                // Update the URL without reloading the page
+                                window.history.pushState({}, "", "{% url 'accounts:chk' %}");
+                            },
+                            error: function (xhr, errmsg, err) {
+                                console.error(xhr, errmsg, err);
+                            },
+                        });
                     }
-                    if (response.status != "authenticated") {
+                    else {
                         disp.innerHTML = response.status
                     }
                 },
@@ -62,8 +76,9 @@
                 },
             })
         });
-       
+
     </script>
+
 </body>
 
 </html>
