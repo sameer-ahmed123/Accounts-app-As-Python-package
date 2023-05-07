@@ -15,25 +15,54 @@
     <a href="{% url 'accounts:login' %}">appname link</a>
 
     <div class="login_box">
-        <form action="" method="post">
+        <form action="" method="post" id="login_form">
             {% csrf_token %}
             {{form.as_p}}
             <input id="login_submit" type="submit">
         </form>
+
+        <div id="disp">
+
+        </div>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"
         integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
     <script>
 
-        // const login_btn = document.getElementById("login_submit")
+        const disp = document.getElementById("disp")
+        $(document).on('submit', '#login_form', function (e) {
+            e.preventDefault();
+            var username = $("#id_username").val()
+            var password = $("#id_password").val()
+            $.ajax({
+                type: 'POST',
+                url: '{% url "accounts:login" %}',
+                data: {
+                    'username': username,
+                    'password': password,
+                    csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+                    action: 'post'
+                },
+                success: function (response) {
+                    console.log(response.status)
+                    console.log("ajax login working")
+                    $("#error_message").text(response.status)
+                    if (response.status == "authenticated") {
+                        $("#error_message").text(response.status)
+                        setTimeout(() => { window.location = "{% url 'accounts:chk' %}" }, 3000)
+                        // disp.innerHTML = "login sussess"
+                    }
+                    if (response.status != "authenticated") {
+                        disp.innerHTML = response.status
+                    }
+                },
+                error: function (xhr, errmsg, err) {
+                    console.error(xhr, errmsg, err)
 
-        // login_btn.onclick = (e) =>{
-        //     e.preventDefault()
-        //     console.log("prevented default")
-        //}
-
-        //*** Scrap xhr for django instead use jquery 
+                }
+            });
+        })
     </script>
 </body>
 
