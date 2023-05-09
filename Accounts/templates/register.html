@@ -1,18 +1,76 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>register</title>
 </head>
-<body>
-    <form method="post">
-        {% csrf_token%}
 
+<body>
+    <form id="register_form" method="post">
+        {% csrf_token%}
         {{form.as_p}}
         <input type="submit" name="" id="">
 
     </form>
+
+
+    <!-- <script src="https://code.jquery.com/jquery-3.6.4.min.js"
+        integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
+    <script>
+        const reg_form = document.getElementById("register_form")
+
+        $(document).on('submit', '#register_form', function (e) {
+            e.preventDefault();
+            var username = $("#id_username").val()
+            var password1 = $("#id_password1").val()
+            var password2 = $("#id_password2").val()
+            $.ajax({
+                type: 'POST',
+                url: '{% url "accounts:login" %}',
+                data: {
+                    'username': username,
+                    'password1': password1,
+                    'password2':password2,
+                    csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+                    action: 'post'
+                },
+                success: function (response) {
+                    console.log(response.status)
+                    console.log("ajax register working")
+                    $("#error_message").text(response.status)
+                    if (response.status == "registered") {
+                        $("#error_message").text(response.status);
+                        disp.innerHTML = "registeration success";
+                        // here after the post ajax request succeeds it send
+                        // another get request to get the required page 
+                        // $.ajax({
+                        //     url: "{% url 'accounts:chk' %}",
+                        //     type: "GET",
+                        //     success: function (data) {
+                        //         // Replace the current page content with the fetched content
+                        //         $("html").html(data);
+                        //         // Update the URL without reloading the page
+                        //         window.history.pushState({}, "", "{% url 'accounts:chk' %}");
+                        //     },
+                        //     error: function (xhr, errmsg, err) {
+                        //         console.error(xhr, errmsg, err);
+                        //     },
+                        // });
+                    }
+                    else {
+                        disp.innerHTML = response.status
+                    }
+                },
+                error: function (xhr, errmsg, err) {
+                    console.error(xhr, errmsg, err)
+                },
+            })
+        }); -->
+
+    </script>
 </body>
+
 </html>

@@ -1,7 +1,7 @@
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
-from Accounts.forms import login_form
+from Accounts.forms import login_form, register_form
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
 
@@ -38,16 +38,22 @@ def AccountsLogin(request):
 
 
 def AccountRegister(request):
-    form = UserCreationForm
+    form = register_form 
     if request.method == "POST":
-        form = UserCreationForm(data=request.POST)
-        if form.is_valid():
-            user = form.save(commit=False)
-            user.save()
-            login(request, user)
-            return redirect("accounts:chk")
+        # if request.META.get("HTTP_X_REQUESTED_WITH") == 'XMLHttpRequest':
+            username =request.POST.get("username")
+            password1 = request.POST.get("password1")
+            password2 = request.POST.get("password2") 
+            #csn use the User model to create new user objects ??
+            form = register_form(request.POST)
+            if form.is_valid():
+                user = form.save(commit=False)
+                user.save()
+                login(request, user)
+                
+                return redirect("accounts:chk")
     else:
-        form = UserCreationForm()
+        form = register_form()
     context = {
         "form": form,
     }
