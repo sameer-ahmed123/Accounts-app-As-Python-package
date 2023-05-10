@@ -86,6 +86,7 @@
                 },
                 complete: function () {
                     // Update the history state with the captured page content
+                    // complete: works even if ajax fails -
                     window.history.replaceState(
                         { pageContent: currentPageContent },
                         "",
