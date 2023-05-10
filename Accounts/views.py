@@ -1,6 +1,6 @@
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
 from Accounts.forms import login_form, register_form
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
@@ -38,19 +38,38 @@ def AccountsLogin(request):
 
 
 def AccountRegister(request):
-    form = register_form 
+    form = register_form
     if request.method == "POST":
-        # if request.META.get("HTTP_X_REQUESTED_WITH") == 'XMLHttpRequest':
-            username =request.POST.get("username")
+        if request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
+            print("AJAX Register")
+            username = request.POST.get("username")
             password1 = request.POST.get("password1")
-            password2 = request.POST.get("password2") 
-            #csn use the User model to create new user objects ??
-            form = register_form(request.POST)
+            password2 = request.POST.get("password2")
+            if (password1 == password2):
+                print(username, password1, password2 + "in python view")
+                # csn use the User model to create new user objects ??
+                try:
+                    user = User.objects.create_user(
+                        username=username, password=password1)
+                    # user.save()
+                    login(request, user)
+                    return JsonResponse({
+                        "status": "success"
+                    })
+                except:
+                    return JsonResponse({
+                        "status": "fail"
+                    })
+            else:
+                return JsonResponse({
+                    "status": "password mismatch"
+                })
+        else:
             if form.is_valid():
                 user = form.save(commit=False)
                 user.save()
                 login(request, user)
-                
+
                 return redirect("accounts:chk")
     else:
         form = register_form()

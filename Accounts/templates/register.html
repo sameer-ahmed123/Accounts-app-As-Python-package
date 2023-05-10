@@ -15,9 +15,12 @@
         <input type="submit" name="" id="">
 
     </form>
+    <div id="disp">
+
+    </div>
 
 
-    <!-- <script src="https://code.jquery.com/jquery-3.6.4.min.js"
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"
         integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
     <script>
         const reg_form = document.getElementById("register_form")
@@ -27,9 +30,10 @@
             var username = $("#id_username").val()
             var password1 = $("#id_password1").val()
             var password2 = $("#id_password2").val()
+            console.log(username, password1, password2)
             $.ajax({
                 type: 'POST',
-                url: '{% url "accounts:login" %}',
+                url: '{% url "accounts:register" %}',
                 data: {
                     'username': username,
                     'password1': password1,
@@ -41,24 +45,24 @@
                     console.log(response.status)
                     console.log("ajax register working")
                     $("#error_message").text(response.status)
-                    if (response.status == "registered") {
+                    if (response.status == "success") {
                         $("#error_message").text(response.status);
                         disp.innerHTML = "registeration success";
-                        // here after the post ajax request succeeds it send
-                        // another get request to get the required page 
-                        // $.ajax({
-                        //     url: "{% url 'accounts:chk' %}",
-                        //     type: "GET",
-                        //     success: function (data) {
-                        //         // Replace the current page content with the fetched content
-                        //         $("html").html(data);
-                        //         // Update the URL without reloading the page
-                        //         window.history.pushState({}, "", "{% url 'accounts:chk' %}");
-                        //     },
-                        //     error: function (xhr, errmsg, err) {
-                        //         console.error(xhr, errmsg, err);
-                        //     },
-                        // });
+                       // here after the post ajax request succeeds it send
+                       // another get request to get the required page 
+                        $.ajax({
+                            url: "{% url 'accounts:chk' %}",
+                            type: "GET",
+                            success: function (data) {
+                                // Replace the current page content with the fetched content
+                                $("html").html(data);
+                                // Update the URL without reloading the page
+                                window.history.pushState({}, "", "{% url 'accounts:chk' %}");
+                            },
+                            error: function (xhr, errmsg, err) {
+                                console.error(xhr, errmsg, err);
+                            },
+                        });
                     }
                     else {
                         disp.innerHTML = response.status
@@ -68,7 +72,7 @@
                     console.error(xhr, errmsg, err)
                 },
             })
-        }); -->
+        });
 
     </script>
 </body>

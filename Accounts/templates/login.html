@@ -26,18 +26,29 @@
         </div>
     </div>
 
-        <script src="https://code.jquery.com/jquery-3.6.4.min.js"
-            integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
-    <script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"
+        integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
 
-        const disp = document.getElementById("disp")
+    <script>
+        // Add the popstate event listener code
+        window.addEventListener("popstate", function (event) {
+            if (event.state && event.state.pageContent) {
+                $("html").html(event.state.pageContent);
+            }
+        });
+
+        // ...
+
+        const disp = document.getElementById("disp");
         $(document).on('submit', '#login_form', function (e) {
             e.preventDefault();
-            var username = $("#id_username").val()
-            var password = $("#id_password").val()
+            var username = $("#id_username").val();
+            var password = $("#id_password").val();
+            var currentPageContent = $("html").html(); // Capture current page content
+
             $.ajax({
                 type: 'POST',
-                url: '{% url "accounts:login" %}',
+                url: 'login',
                 data: {
                     'username': username,
                     'password': password,
@@ -45,37 +56,45 @@
                     action: 'post'
                 },
                 success: function (response) {
-                    console.log(response.status)
-                    console.log("ajax login working")
-                    $("#error_message").text(response.status)
+                    console.log(response.status);
+                    console.log("ajax login working");
+                    $("#error_message").text(response.status);
                     if (response.status == "authenticated") {
                         $("#error_message").text(response.status);
                         disp.innerHTML = "login success";
-                        // here after the post ajax request succeeds it send
-                        // another get request to get the required page 
                         $.ajax({
-                            url: "{% url 'accounts:chk' %}",
+                            url: "authCheck",
                             type: "GET",
                             success: function (data) {
-                                // Replace the current page content with the fetched content
                                 $("html").html(data);
-                                // Update the URL without reloading the page
-                                window.history.pushState({}, "", "{% url 'accounts:chk' %}");
+                                window.history.pushState(
+                                    { pageContent: data },
+                                    "",
+                                    "authCheck"
+                                );
                             },
                             error: function (xhr, errmsg, err) {
                                 console.error(xhr, errmsg, err);
                             },
                         });
-                    }
-                    else {
-                        disp.innerHTML = response.status
+                    } else {
+                        disp.innerHTML = response.status;
                     }
                 },
                 error: function (xhr, errmsg, err) {
-                    console.error(xhr, errmsg, err)
+                    console.error(xhr, errmsg, err);
                 },
-            })
+                complete: function () {
+                    // Update the history state with the captured page content
+                    window.history.replaceState(
+                        { pageContent: currentPageContent },
+                        "",
+                        ""
+                    );
+                }
+            });
         });
+
 
     </script>
 
