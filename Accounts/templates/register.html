@@ -51,13 +51,13 @@
                        // here after the post ajax request succeeds it send
                        // another get request to get the required page 
                         $.ajax({
-                            url: "{% url 'accounts:chk' %}",
+                            url: "{{ settings.REDIRECT_VIEW_PACKAGE }}",
                             type: "GET",
                             success: function (data) {
                                 // Replace the current page content with the fetched content
                                 $("html").html(data);
                                 // Update the URL without reloading the page
-                                window.history.pushState({}, "", "{% url 'accounts:chk' %}");
+                                window.history.pushState({}, "", "{{ settings.REDIRECT_VIEW_PACKAGE }}");
                             },
                             error: function (xhr, errmsg, err) {
                                 console.error(xhr, errmsg, err);
