@@ -39,7 +39,7 @@ def AccountsLogin(request):
 
 
 def AccountRegister(request):
-    form = register_form
+    form = register_form(request.POST)
     if request.method == "POST":
         if request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
             print("AJAX Register")

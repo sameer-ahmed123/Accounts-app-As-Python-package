@@ -30,3 +30,5 @@ class register_form(UserCreationForm):
         if commit:
             user.save()
         return user
+
+

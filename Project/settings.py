@@ -133,5 +133,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_URL = "accounts:login"
 
-REDIRECT_VIEW_PACKAGE  = "authCheck"
+REDIRECT_VIEW_PACKAGE  = "accounts:chk"
 print(REDIRECT_VIEW_PACKAGE)

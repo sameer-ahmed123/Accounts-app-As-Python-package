@@ -37,7 +37,7 @@
                 data: {
                     'username': username,
                     'password1': password1,
-                    'password2':password2,
+                    'password2': password2,
                     csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
                     action: 'post'
                 },
@@ -48,8 +48,8 @@
                     if (response.status == "success") {
                         $("#error_message").text(response.status);
                         disp.innerHTML = "registeration success";
-                       // here after the post ajax request succeeds it send
-                       // another get request to get the required page 
+                        // here after the post ajax request succeeds it send
+                        // another get request to get the required page 
                         $.ajax({
                             url: "{{ settings.REDIRECT_VIEW_PACKAGE }}",
                             type: "GET",
