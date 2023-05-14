@@ -46,6 +46,25 @@ AUTH_REDIRECT_URL = '/dashboard/'
 ```
 replace the '/dashboard/' with desired URL in your Project
 
+5. Add context prcessor in your settings.py
+```
+python
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                '**processors above **'
+                'Accounts.context_processors.auth_url_redirect_processor', # add this line
+            ],
+        },
+    },
+]
+
+```
+
 ## Features and Roadmap
 
 The current version of the Accounts App provides the following features:
