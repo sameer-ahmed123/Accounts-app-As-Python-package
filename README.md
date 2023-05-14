@@ -47,8 +47,7 @@ AUTH_REDIRECT_URL = '/dashboard/'
 replace the '/dashboard/' with desired URL in your Project
 
 5. Add context prcessor in your settings.py
-```
-python
+```python
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
