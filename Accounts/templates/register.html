@@ -56,9 +56,9 @@
                     $("#error_message").text(response.status)
                     if (response.status == "success") {
                         $("#error_message").text(response.status);
-                        disp.innerHTML = "registration success";
-                        // here after the post ajax request succeeds, it sends
-                        // another GET request to get the required page
+                        disp.innerHTML = "registeration success";
+                       // here after the post ajax request succeeds it send
+                       // another get request to get the required page 
                         $.ajax({
                             url: "{{auth_redirect_url}}",
                             type: "GET",

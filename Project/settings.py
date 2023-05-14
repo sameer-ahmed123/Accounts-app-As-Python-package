@@ -134,5 +134,4 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_URL = "accounts:login"
 
-AUTH_REDIRECT_URL  = "authCheck" # works if it is the url path , not the url name 
-                                
+AUTH_REDIRECT_URL  = "authCheck"

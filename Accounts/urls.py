@@ -9,4 +9,5 @@ urlpatterns = [
     path("login",AccountsLogin, name="login"),
     path("register",AccountRegister,name="register"),
     path("logout",AccountsLogout,name="logout"),
+    
 ]
