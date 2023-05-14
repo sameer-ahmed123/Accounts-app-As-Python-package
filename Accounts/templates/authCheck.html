@@ -3,5 +3,6 @@
 {% block content %}
     <h1>login working</h1>
 
+    <p>User:  ===>  {{request.user.username}}</p>
     <p>preprocessor context : {{auth_redirect_url}}</p>
 {% endblock %}
