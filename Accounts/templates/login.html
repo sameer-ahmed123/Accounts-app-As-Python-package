@@ -40,6 +40,7 @@
         // ...
 
         const disp = document.getElementById("disp");
+        const redirectUrl = "{{auth_redirect_url}}";
         $(document).on('submit', '#login_form', function (e) {
             e.preventDefault();
             var username = $("#id_username").val();
@@ -56,21 +57,19 @@
                     action: 'post'
                 },
                 success: function (response) {
-                    console.log(response.status);
-                    console.log("ajax login working");
                     $("#error_message").text(response.status);
                     if (response.status == "authenticated") {
                         $("#error_message").text(response.status);
                         disp.innerHTML = "login success";
                         $.ajax({
-                            url: "authCheck",
+                            url: redirectUrl,
                             type: "GET",
                             success: function (data) {
                                 $("html").html(data);
                                 window.history.pushState(
                                     { pageContent: data },
                                     "",
-                                    "authCheck"
+                                    redirectUrl
                                 );
                             },
                             error: function (xhr, errmsg, err) {

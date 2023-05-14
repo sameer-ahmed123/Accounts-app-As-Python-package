@@ -2,6 +2,7 @@ from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from Accounts.forms import login_form, register_form
+from django.conf import settings
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
 
@@ -27,18 +28,18 @@ def AccountsLogin(request):
             user = authenticate(request, username=username, password=password)
             if user is not None:
                 login(request, user)
-                return redirect("accounts:chk")
+                return redirect(settings.REDIRECT_VIEW_PACKAGE)
     else:
         form = login_form()
 
     context = {
-        "form": form,
+        "form": form, #pass the settings.py redirect with context
     }
     return render(request, "login.html", context)
 
 
 def AccountRegister(request):
-    form = register_form
+    form = register_form(request.POST)
     if request.method == "POST":
         if request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
             print("AJAX Register")
@@ -70,7 +71,7 @@ def AccountRegister(request):
                 user.save()
                 login(request, user)
 
-                return redirect("accounts:chk")
+                return redirect(settings.REDIRECT_VIEW_PACKAGE)
     else:
         form = register_form()
     context = {
