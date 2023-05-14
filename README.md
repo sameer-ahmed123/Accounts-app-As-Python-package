@@ -42,7 +42,7 @@ python manage.py migrate
 4.Customize the main redirect URL in your project's `settings.py` file. This URL is where the login and register views will redirect users after successful authentication or registration.
 
 ```python
-ACCOUNTS_REDIRECT_URL = '/dashboard/'
+AUTH_REDIRECT_URL = '/dashboard/'
 ```
 replace the '/dashboard/' with desired URL in your Project
 
