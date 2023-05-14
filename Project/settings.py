@@ -71,6 +71,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'Accounts.context_processors.auth_url_redirect_processor', #add this to docs in github
             ],
         },
     },
@@ -133,5 +134,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_URL = "accounts:login"
 
-REDIRECT_VIEW_PACKAGE  = "authCheck"
-print(REDIRECT_VIEW_PACKAGE)
+AUTH_REDIRECT_URL  = "authCheck" # works if it is the url path , not the url name 
+                                

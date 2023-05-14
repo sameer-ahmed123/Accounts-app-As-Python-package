@@ -23,6 +23,15 @@
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"
         integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
     <script>
+        // Add the popstate event listener code
+        window.addEventListener("popstate", function (event) {
+            if (event.state && event.state.pageContent) {
+                $("html").html(event.state.pageContent);
+            }
+        });
+
+        // ...
+
         const reg_form = document.getElementById("register_form")
 
         $(document).on('submit', '#register_form', function (e) {
@@ -30,6 +39,8 @@
             var username = $("#id_username").val()
             var password1 = $("#id_password1").val()
             var password2 = $("#id_password2").val()
+            var currentPageContent = $("html").html(); // Capture current page content
+
             console.log(username, password1, password2)
             $.ajax({
                 type: 'POST',
@@ -37,27 +48,27 @@
                 data: {
                     'username': username,
                     'password1': password1,
-                    'password2':password2,
+                    'password2': password2,
                     csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
                     action: 'post'
                 },
                 success: function (response) {
-                    console.log(response.status)
-                    console.log("ajax register working")
                     $("#error_message").text(response.status)
                     if (response.status == "success") {
                         $("#error_message").text(response.status);
-                        disp.innerHTML = "registeration success";
-                       // here after the post ajax request succeeds it send
-                       // another get request to get the required page 
+                        disp.innerHTML = "registration success";
+                        // here after the post ajax request succeeds, it sends
+                        // another GET request to get the required page
                         $.ajax({
-                            url: "{{ settings.REDIRECT_VIEW_PACKAGE }}",
+                            url: "{{auth_redirect_url}}",
                             type: "GET",
                             success: function (data) {
                                 // Replace the current page content with the fetched content
-                                $("html").html(data);
+                                $(document.documentElement).html(data);
                                 // Update the URL without reloading the page
-                                window.history.pushState({}, "", "{{ settings.REDIRECT_VIEW_PACKAGE }}");
+                                window.history.pushState({ pageContent: data },
+                                    "",
+                                    "{{auth_redirect_url}}");
                             },
                             error: function (xhr, errmsg, err) {
                                 console.error(xhr, errmsg, err);
@@ -71,7 +82,15 @@
                 error: function (xhr, errmsg, err) {
                     console.error(xhr, errmsg, err)
                 },
-            })
+                complete: function () {
+                    // Update the history state with the captured page content
+                    window.history.replaceState(
+                        { pageContent: currentPageContent },
+                        "",
+                        ""
+                    );
+                }
+            });
         });
 
     </script>

@@ -33,7 +33,7 @@ def AccountsLogin(request):
         form = login_form()
 
     context = {
-        "form": form,
+        "form": form, #pass the settings.py redirect with context
     }
     return render(request, "login.html", context)
 

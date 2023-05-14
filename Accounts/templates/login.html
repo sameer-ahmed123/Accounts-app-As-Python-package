@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -41,7 +40,7 @@
         // ...
 
         const disp = document.getElementById("disp");
-        const redirectUrl = "{% url settings.REDIRECT_VIEW_PACKAGE %}";
+        const redirectUrl = "{{auth_redirect_url}}";
         $(document).on('submit', '#login_form', function (e) {
             e.preventDefault();
             var username = $("#id_username").val();
@@ -58,14 +57,10 @@
                     action: 'post'
                 },
                 success: function (response) {
-                    console.log(response.status);
-                    console.log("ajax login working");
                     $("#error_message").text(response.status);
                     if (response.status == "authenticated") {
                         $("#error_message").text(response.status);
                         disp.innerHTML = "login success";
-                        let a= "{% url settings.REDIRECT_VIEW_PACKAGE %}"
-                        console.log("a is" + `"${a}"`)
                         $.ajax({
                             url: redirectUrl,
                             type: "GET",
