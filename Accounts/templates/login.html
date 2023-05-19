@@ -1,103 +1,93 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'Base.html' %}
+{% block content %}
+<h1>login page for Accounts app</h1>
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>login Page</title>
+<a href="{% url 'accounts:login' %}">appname link</a>
 
-</head>
+<div class="login_box">
+    
+    <form action="" method="post" class="login_form" id="login_form">
+        <h2 class="login_heading">LOGIN</h2>
+        {% csrf_token %}
+        {{form.as_p}}
+        <input id="login_submit" type="submit">
+    </form>
 
-<body>
-    <h1>login page for Accounts app</h1>
+    <div id="disp">
 
-    <a href="{% url 'accounts:login' %}">appname link</a>
-
-    <div class="login_box">
-        <form action="" method="post" id="login_form">
-            {% csrf_token %}
-            {{form.as_p}}
-            <input id="login_submit" type="submit">
-        </form>
-
-        <div id="disp">
-
-        </div>
     </div>
+</div>
 
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js"
-        integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"
+    integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
 
-    <script>
-        // Add the popstate event listener code
-        window.addEventListener("popstate", function (event) {
-            if (event.state && event.state.pageContent) {
-                $("html").html(event.state.pageContent);
+<script>
+    // Add the popstate event listener code
+    window.addEventListener("popstate", function (event) {
+        if (event.state && event.state.pageContent) {
+            $("html").html(event.state.pageContent);
+        }
+    });
+
+    // ...
+
+    const disp = document.getElementById("disp");
+    const redirectUrl = "{{auth_redirect_url}}";
+    $(document).on('submit', '#login_form', function (e) {
+        e.preventDefault();
+        var username = $("#id_username").val();
+        var password = $("#id_password").val();
+        var currentPageContent = $("html").html(); // Capture current page content
+
+        $.ajax({
+            type: 'POST',
+            url: 'login',
+            data: {
+                'username': username,
+                'password': password,
+                csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+                action: 'post'
+            },
+            success: function (response) {
+                $("#error_message").text(response.status);
+                if (response.status == "authenticated") {
+                    $("#error_message").text(response.status);
+                    disp.innerHTML = "login success";
+                    $.ajax({
+                        url: redirectUrl,
+                        type: "GET",
+                        success: function (data) {
+                            $("html").html(data);
+                            window.history.pushState(
+                                { pageContent: data },
+                                "",
+                                redirectUrl
+                            );
+                        },
+                        error: function (xhr, errmsg, err) {
+                            console.error(xhr, errmsg, err);
+                        },
+                    });
+                } else {
+                    disp.innerHTML = response.status;
+                }
+            },
+            error: function (xhr, errmsg, err) {
+                console.error(xhr, errmsg, err);
+            },
+            complete: function () {
+                // Update the history state with the captured page content
+                // complete: works even if ajax fails -
+                window.history.replaceState(
+                    { pageContent: currentPageContent },
+                    "",
+                    ""
+                );
             }
         });
-
-        // ...
-
-        const disp = document.getElementById("disp");
-        const redirectUrl = "{{auth_redirect_url}}";
-        $(document).on('submit', '#login_form', function (e) {
-            e.preventDefault();
-            var username = $("#id_username").val();
-            var password = $("#id_password").val();
-            var currentPageContent = $("html").html(); // Capture current page content
-
-            $.ajax({
-                type: 'POST',
-                url: 'login',
-                data: {
-                    'username': username,
-                    'password': password,
-                    csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
-                    action: 'post'
-                },
-                success: function (response) {
-                    $("#error_message").text(response.status);
-                    if (response.status == "authenticated") {
-                        $("#error_message").text(response.status);
-                        disp.innerHTML = "login success";
-                        $.ajax({
-                            url: redirectUrl,
-                            type: "GET",
-                            success: function (data) {
-                                $("html").html(data);
-                                window.history.pushState(
-                                    { pageContent: data },
-                                    "",
-                                    redirectUrl
-                                );
-                            },
-                            error: function (xhr, errmsg, err) {
-                                console.error(xhr, errmsg, err);
-                            },
-                        });
-                    } else {
-                        disp.innerHTML = response.status;
-                    }
-                },
-                error: function (xhr, errmsg, err) {
-                    console.error(xhr, errmsg, err);
-                },
-                complete: function () {
-                    // Update the history state with the captured page content
-                    // complete: works even if ajax fails -
-                    window.history.replaceState(
-                        { pageContent: currentPageContent },
-                        "",
-                        ""
-                    );
-                }
-            });
-        });
+    });
 
 
-    </script>
+</script>
 
-</body>
-
-</html>
+{% endblock %}
