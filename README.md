@@ -42,9 +42,11 @@ python manage.py migrate
 4.Customize the main redirect URL in your project's `settings.py` file. This URL is where the login and register views will redirect users after successful authentication or registration.
 
 ```python
+APP_NAME = "accounts"  # add this line for redirects witho no Jquery 
 AUTH_REDIRECT_URL = '/dashboard/'
 ```
 replace the '/dashboard/' with desired URL in your Project
+replace the "accounts " with app_name from your Apps urlpatterns 
 
 5. Add context prcessor in your settings.py
 ```python
