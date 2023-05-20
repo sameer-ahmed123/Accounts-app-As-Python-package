@@ -45,8 +45,8 @@ python manage.py migrate
 APP_NAME = "accounts"  # add this line for redirects witho no Jquery 
 AUTH_REDIRECT_URL = '/dashboard/'
 ```
-replace the '/dashboard/' with desired URL in your Project
-replace the "accounts " with app_name from your Apps urlpatterns 
+replace the '/dashboard/' with desired URL in your Project.
+replace the "accounts " with app_name from your Apps urlpatterns, make sure that  url path and url name are same when using the (No Jquery) option.
 
 5. Add context prcessor in your settings.py
 ```python
