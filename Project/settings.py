@@ -137,4 +137,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_URL = "accounts:login"
 
-AUTH_REDIRECT_URL  = "authCheck"
+APP_NAME = "accounts"
+AUTH_REDIRECT_URL  = "check2"  # keep url endpoint and the url name same  

@@ -1,5 +1,6 @@
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
+from django.urls import reverse_lazy,reverse
 from django.contrib.auth.models import User
 from Accounts.forms import login_form, register_form
 from django.conf import settings
@@ -28,7 +29,7 @@ def AccountsLogin(request):
             user = authenticate(request, username=username, password=password)
             if user is not None:
                 login(request, user)
-                return redirect(settings.REDIRECT_VIEW_PACKAGE)
+                return redirect(reverse(f"{settings.APP_NAME}:{settings.AUTH_REDIRECT_URL}"))
     else:
         form = login_form()
 
@@ -71,7 +72,7 @@ def AccountRegister(request):
                 user.save()
                 login(request, user)
 
-                return redirect(settings.REDIRECT_VIEW_PACKAGE)
+                return redirect(reverse(f"{settings.APP_NAME}:{settings.AUTH_REDIRECT_URL}"))
     else:
         form = register_form()
     context = {
@@ -82,9 +83,13 @@ def AccountRegister(request):
 
 def AccountsLogout(request):
     logout(request)
-    return redirect("accounts:chk")
+    return redirect("accounts:authCheck")
 
 
 @login_required
 def checkauth(request):
     return render(request, "authCheck.html")
+
+
+def chk2(request):
+    return render(request, "check2.html")

@@ -1,21 +1,20 @@
 {% extends 'Base.html' %}
 {% block content %}
-<h1>login page for Accounts app</h1>
+<!-- <h1>login page for Accounts app</h1>
 
-<a href="{% url 'accounts:login' %}">appname link</a>
+<a href="{% url 'accounts:login' %}">appname link</a> -->
 
 <div class="login_box">
-    
+
     <form action="" method="post" class="login_form" id="login_form">
+        <div id="disp" style="background-color: red;width: 85%;padding: 10px;color: #fff;"></div>
         <h2 class="login_heading">LOGIN</h2>
         {% csrf_token %}
         {{form.as_p}}
-        <input id="login_submit" type="submit">
+        <input class="login_submit" id="login_submit" type="submit">
     </form>
 
-    <div id="disp">
 
-    </div>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"
