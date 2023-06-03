@@ -12,6 +12,26 @@
         {% csrf_token %}
         {{form.as_p}}
         <input class="login_submit" id="login_submit" type="submit">
+        <div
+            style="width:100%;text-align:center;display: flex;align-items: center;justify-content: center;flex-direction: column;border-top: 1px solid #e2e2e2;">
+            <h2>Or login with</h2>
+
+            <div class="login_icon_wrapper">
+
+                <div class="icon_container">
+                    <i class="fa-brands fa-google" style="color: #ffffff;"></i>
+                </div>
+                <div class="icon_container">
+                    <i class="fa-brands fa-facebook" style="color: #ffffff;"></i>
+                </div>
+                <div class="icon_container">
+                    <i class="fa-brands fa-github" style="color: #ffffff;"></i>
+                </div>
+
+            </div>
+
+        </div>
+
     </form>
 
 
